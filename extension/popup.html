@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CyberShield SafeBrowse</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { width: 320px; font-family: Inter, system-ui, sans-serif; background: #020817; color: #e2e8f0; }
+    .header { background: linear-gradient(135deg, #0a1628, #0f2044); padding: 1rem; border-bottom: 1px solid rgba(34,211,238,0.1); display: flex; align-items: center; gap: 10px; }
+    .logo { width: 32px; height: 32px; background: linear-gradient(135deg, #0891b2, #22d3ee); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .title { font-weight: 800; font-size: 0.95rem; }
+    .subtitle { font-size: 0.65rem; color: #22d3ee; letter-spacing: 0.08em; text-transform: uppercase; }
+    .body { padding: 1rem; }
+    .status-row { display: flex; align-items: center; gap: 10px; background: rgba(15,32,68,0.7); border: 1px solid rgba(34,211,238,0.1); border-radius: 0.5rem; padding: 0.75rem; margin-bottom: 0.75rem; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot.green { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.5); animation: blink 2s infinite; }
+    .dot.gray { background: #475569; }
+    .dot.red { background: #ef4444; }
+    @keyframes blink { 0%,100% { opacity:1 } 50% { opacity:0.5 } }
+    .stat-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-val { font-size: 1rem; font-weight: 700; color: #22d3ee; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .grid-card { background: rgba(15,32,68,0.5); border: 1px solid rgba(34,211,238,0.08); border-radius: 0.4rem; padding: 0.6rem; }
+    .btn { width: 100%; padding: 0.6rem; border-radius: 0.4rem; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
+    .btn-primary { background: linear-gradient(135deg, #0891b2, #22d3ee); color: #020817; margin-bottom: 0.5rem; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-ghost { background: rgba(15,32,68,0.7); color: #64748b; border: 1px solid rgba(100,116,139,0.2); }
+    .btn-ghost:hover { color: #94a3b8; }
+    .footer { padding: 0.6rem 1rem; border-top: 1px solid rgba(34,211,238,0.06); font-size: 0.65rem; color: #334155; text-align: center; }
+    .syncing { animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛡</div>
+    <div>
+      <div class="title">CyberShield</div>
+      <div class="subtitle">SafeBrowse Active</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="status-row" id="statusRow">
+      <div class="dot gray" id="statusDot"></div>
+      <div>
+        <div class="stat-label">Protection Status</div>
+        <div class="stat-val" id="statusText">Loading...</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="grid-card">
+        <div class="stat-label">Blocked Rules</div>
+        <div class="stat-val" id="ruleCount">...</div>
+      </div>
+      <div class="grid-card">
+        <div class="stat-label">Last Sync</div>
+        <div style="font-size:0.75rem; color:#64748b; margin-top:2px" id="lastSync">...</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="syncBtn" onclick="syncNow()">&#8635; Sync Rules Now</button>
+    <button class="btn btn-ghost" onclick="openDashboard()">&#128196; Open Dashboard</button>
+  </div>
+  <div class="footer">CyberShield-AI v1.0 &middot; Manifest V3</div>
+  <script src="popup.js"></script>
+</body>
+</html>

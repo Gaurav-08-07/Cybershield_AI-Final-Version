@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOT SAFE TO BROWSE - CyberShield</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap');
+    body {
+      font-family: Inter, sans-serif; background: #020817; color: #e2e8f0;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 1rem;
+    }
+    .card {
+      max-width: 560px; width: 100%;
+      background: rgba(15,32,68,0.9);
+      border: 1px solid rgba(239,68,68,0.4);
+      border-radius: 1rem; padding: 2.5rem;
+      box-shadow: 0 0 60px rgba(239,68,68,0.15);
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:translateY(0) } }
+    .shield-icon { font-size: 4rem; text-align: center; margin-bottom: 1rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { text-shadow: 0 0 20px rgba(239,68,68,0.3) } 50% { text-shadow: 0 0 40px rgba(239,68,68,0.6) } }
+    .warning-badge { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.5); color: #f87171; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; display: inline-block; margin-bottom: 1rem; }
+    h1 { font-size: 2rem; font-weight: 800; color: #f87171; margin-bottom: 0.5rem; line-height: 1.1; }
+    .domain { font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.3); border: 1px solid rgba(239,68,68,0.3); border-radius: 0.5rem; padding: 0.5rem 1rem; color: #f87171; font-size: 1rem; margin: 1rem 0; word-break: break-all; }
+    .description { color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .evidence { background: rgba(0,0,0,0.3); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem; border-left: 3px solid #ef4444; }
+    .evidence-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 0.5rem; font-weight: 600; }
+    .evidence-text { font-size: 0.85rem; color: #cbd5e1; }
+    .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn-safe { background: linear-gradient(135deg, #166534, #22c55e); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-size: 0.9rem; font-weight: 700; cursor: pointer; flex: 1; transition: all 0.2s; }
+    .btn-safe:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(34,197,94,0.3); }
+    .btn-proceed { background: transparent; color: #64748b; border: 1px solid rgba(100,116,139,0.3); padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .btn-proceed:hover { color: #94a3b8; border-color: rgba(100,116,139,0.5); }
+    .warning-text { font-size: 0.72rem; color: #475569; margin-top: 1rem; text-align: center; }
+    .powered { font-size: 0.68rem; color: #334155; text-align: center; margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div style="text-align:center">
+      <div class="warning-badge">CyberShield Threat Detected</div>
+    </div>
+    <div class="shield-icon">🛡️</div>
+    <div style="text-align:center; margin-bottom:1.5rem">
+      <h1>NOT SAFE TO BROWSE</h1>
+      <p style="color:#94a3b8; font-size:0.9rem">CyberShield has blocked this destination</p>
+    </div>
+    <div class="domain" id="domain">Loading...</div>
+    <div class="evidence">
+      <div class="evidence-label">Threat Intelligence Match</div>
+      <div class="evidence-text" id="evidence">This domain matches a known malicious indicator in the CyberShield threat intelligence database.</div>
+    </div>
+    <p class="description">
+      This URL has been identified as potentially malicious based on threat intelligence data. Visiting this site may expose you to malware, phishing, or other cyberattacks.
+    </p>
+    <div class="actions">
+      <button class="btn-safe" onclick="goBack()">&#8592; Go Back to Safety</button>
+      <button class="btn-proceed" onclick="proceedAnyway()" id="proceedBtn">Proceed anyway (unsafe)</button>
+    </div>
+    <p class="warning-text">If you believe this is a false positive, you can report it in the CyberShield dashboard.</p>
+    <p class="powered">Protected by CyberShield-AI v1.0 &middot; Powered by URLhaus Threat Intelligence</p>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const domain = params.get('domain') || 'Unknown domain';
+    document.getElementById('domain').textContent = domain;
+    document.title = 'NOT SAFE TO BROWSE - ' + domain;
+
+    let clicks = 0;
+    document.getElementById('proceedBtn').addEventListener('click', function() {
+      clicks++;
+      if (clicks < 2) { this.textContent = 'Are you sure? Click again to confirm (unsafe)'; this.style.color = '#f87171'; this.style.borderColor = 'rgba(239,68,68,0.4)'; }
+      else { proceedAnyway(); }
+    });
+
+    function goBack() {
+      if (window.history.length > 1) { window.history.go(-2); }
+      else { window.location.href = 'chrome://newtab'; }
+    }
+
+    function proceedAnyway() {
+      const confirmed = confirm('WARNING: Proceeding to ' + domain + ' may expose your device to malware or phishing attacks. Are you absolutely sure?');
+      if (confirmed) { window.history.go(-1); }
+    }
+
+    // Fetch extra context from API if available
+    fetch('http://localhost:8000/api/v1/scans?search=' + encodeURIComponent(domain) + '&per_page=1')
+      .then(r => r.json()).then(data => {
+        const scan = data.items?.[0];
+        if (scan && scan.verdict === 'malicious') {
+          document.getElementById('evidence').textContent = 'Verdict: ' + scan.verdict + ' | Risk Score: ' + (scan.risk_score ?? 'N/A') + ' | Category: ' + (scan.category ?? 'Unknown');
+        }
+      }).catch(() => {});
+  </script>
+</body>
+</html>
