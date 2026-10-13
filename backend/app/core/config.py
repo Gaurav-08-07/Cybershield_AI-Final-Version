@@ -3,6 +3,11 @@ import os
 from pydantic_settings import BaseSettings
 from typing import Optional
 
+def _get_default_database_url() -> str:
+    if os.environ.get("VERCEL"):
+        return "sqlite+aiosqlite:////tmp/cybershield.db"
+    return "sqlite+aiosqlite:///./cybershield.db"
+
 class Settings(BaseSettings):
     # Application
     APP_NAME: str = "CyberShield-AI"
@@ -10,14 +15,14 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     
     # Database
-    DATABASE_URL: str = "sqlite+aiosqlite:///./cybershield.db"
+    DATABASE_URL: str = _get_default_database_url()
     
     # API
     API_V1_PREFIX: str = "/api/v1"
     
     # Security
     SECRET_KEY: str = "CHANGE_ME_IN_PRODUCTION_USE_LONG_RANDOM_STRING"
-    ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000", "*"]
     
     # Threat Intelligence Providers
     VIRUSTOTAL_API_KEY: Optional[str] = None

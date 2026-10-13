@@ -46,3 +46,5 @@ cybershield.db
 .DS_Store
 Thumbs.db
 *.log
+
+extension/_metadata/
